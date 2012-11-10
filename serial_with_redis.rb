@@ -4,7 +4,8 @@ require '~/git/sidekiq_testing/graph'
 require '~/git/sidekiq_testing/extensions/string'
 
 
-[10, 50, 100, 500, 1000, 5000, 10_000, 50_000, 100_000, 500_000].each do |num|
+#[10, 50, 100, 500, 1000, 5000, 10_000, 20_000, 30_000, 40_00, 50_000, 100_000, 200_000, 300_000, 400_000, 500_000, 600_000, 800_000, 1_000_000].each do |num|
+[10].each do |num|
   t = Time.now
   g = Graph.new
 

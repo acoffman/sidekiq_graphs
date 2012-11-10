@@ -59,7 +59,7 @@ class RedisGraph
 
   def self.visit_node( node_id )
     #decrement the indegree of the node
-    remaining_indegree = redis.decr( indegree_id_for_node_id( edge ) )
+    remaining_indegree = redis.decr( indegree_id_for_node_id( node_id ) )
     execute_node_by_id( node_id ) if remaining_indegree == 0
   end
 
@@ -80,7 +80,7 @@ class RedisGraph
       #create a new instance of the node's worker class and queue it up as 'ready'
       worker = StringHelpers.constantize( redis.hget(node_id, 'worker_class') )
       arg = redis.hget( node_id, 'workflow_identifier' )
-      worker.perform_async( arg )
+      worker.perform_async(msg: arg, node_id: node_id )
     end
 
     def self.handle_ready_nodes( nodes )
