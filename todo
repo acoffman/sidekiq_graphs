@@ -1,0 +1,3 @@
+indegree as id to redis counter
+class method on node containing attribute names (instead of on redisgraph)
+visit each child node and decrement the indegree
