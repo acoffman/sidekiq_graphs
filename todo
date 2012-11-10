@@ -1,3 +1,9 @@
-indegree as id to redis counter (HINCRBY myhash field -1)
-class method on node containing attribute names (instead of on redisgraph)
-visit each child node and decrement the indegree
+# TODO
+
+- indegree as id to redis counter (HINCRBY myhash field -1)
+- class method on node containing attribute names (instead of on redisgraph)
+- visit each child node and decrement the indegree
+
+# Ideas
+
+- Should Node be a mixin or abstract class and then we make a RedisNode?
