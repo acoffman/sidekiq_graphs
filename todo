@@ -7,3 +7,6 @@
 # Ideas
 
 - Should Node be a mixin or abstract class and then we make a RedisNode?
+- Would [Redis::Objects][] be useful?
+
+[Redis::Objects]: https://github.com/nateware/redis-objects
