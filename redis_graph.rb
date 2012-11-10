@@ -3,6 +3,7 @@ require 'redis'
 class RedisGraph
 
   def self.store( graph )
+    ready_nodes = []
     redis.pipelined do
       graph.nodes.each do |node|
 
@@ -18,6 +19,9 @@ class RedisGraph
         #set up the indegree counter
         redis.incrby( indegree_id, node.indegree )
 
+        #if we can queue up the node to run now do so
+        ready_nodes << node if node.indegree == 0
+
         #store the ids for the indegree counter and edges set in the node
         redis.hset( node.id, 'edges', edges_id )
         redis.hset( node.id, 'indegree', indegree_id )
@@ -28,6 +32,7 @@ class RedisGraph
         end
       end
     end
+    handle_ready_nodes( ready_nodes )
   end
 
   def self.delete_graph( graph )
@@ -53,14 +58,9 @@ class RedisGraph
   end
 
   def self.visit_node( node_id )
-      #decrement the indegree of the node
-      remaining_indegree = redis.decr( indegree_id_for_node_id( edge ) )
-      if remaining_indegree == 0
-        #create a new instance of the node's worker class and queue it up as 'ready'
-        worker = StringHelpers.constantize( redis.hget(node_id, 'worker_class') ).new
-        arg = redis.hget( node_id, 'workflow_identifier' )
-        worker.perform_async( arg )
-      end
+    #decrement the indegree of the node
+    remaining_indegree = redis.decr( indegree_id_for_node_id( edge ) )
+    execute_node_by_id( node_id ) if remaining_indegree == 0
   end
 
   private
@@ -74,6 +74,19 @@ class RedisGraph
 
     def self.redis
       @redis ||= Redis.new( host: 'localhost', port: 6379 )
+    end
+
+    def self.execute_node_by_id( node_id )
+      #create a new instance of the node's worker class and queue it up as 'ready'
+      worker = StringHelpers.constantize( redis.hget(node_id, 'worker_class') )
+      arg = redis.hget( node_id, 'workflow_identifier' )
+      worker.perform_async( arg )
+    end
+
+    def self.handle_ready_nodes( nodes )
+      #if we had zero nodes with 0 indegree, we can't start..
+      raise 'Graph is not startable!' if nodes.empty?
+      nodes.each { |node| execute_node_by_id( node.id ) }
     end
 
 end

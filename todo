@@ -1,5 +1,7 @@
 # TODO
 
+- I feel like store is too coupled to "start the workflow" is that okay? Maybe not... how do we effectively decouple them
+
 
 # Ideas
 
