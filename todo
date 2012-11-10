@@ -3,6 +3,7 @@
 - indegree as id to redis counter (HINCRBY myhash field -1)
 - class method on node containing attribute names (instead of on redisgraph)
 - visit each child node and decrement the indegree
+- if indegree is zero then call perform
 
 # Ideas
 
