@@ -9,5 +9,6 @@
 
 - Should Node be a mixin or abstract class and then we make a RedisNode?
 - Would [Redis::Objects][] be useful?
+- Maybe it makes sense for us to define a persistence API, and then dependency inject an instance of something to the graph instance (redis, memory, etc) rather than having them be helper classes that take graph objects
 
 [Redis::Objects]: https://github.com/nateware/redis-objects
