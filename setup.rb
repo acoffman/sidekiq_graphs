@@ -1,5 +1,6 @@
-require '~/sidekiq_testing/redis_graph'
-require '~/sidekiq_testing/graph'
+require '~/git/sidekiq_testing/redis_graph'
+require '~/git/sidekiq_testing/graph'
+require '~/git/sidekiq_testing/extensions/string'
 g = Graph.new
 n1 = g.create_node( 'test', 'some_id' )
 n2 = g.create_node( 'test', 'some_id' )

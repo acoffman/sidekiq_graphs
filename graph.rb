@@ -2,7 +2,7 @@ require 'uuid'
 require 'set'
 
 class Graph
-  attr_reader :id, :nodes, :edges
+  attr_reader :id, :edges
   @@uuid = UUID.new
 
   def initialize( id = @@uuid.generate)
@@ -23,6 +23,14 @@ class Graph
     child.indegree += 1 if @edges[parent.id].add?( child.id )
   end
 
+  def nodes
+    @nodes.values
+  end
+
+  def node( id )
+    @nodes[id]
+  end
+
 end
 
 class Node
@@ -36,6 +44,10 @@ class Node
     @worker_class = worker_class
     @workflow_identifier = workflow_identifier
     @indegree = indegree
+  end
+
+  def self.node_attrs
+    ['worker_class', 'workflow_identifier']
   end
 
 end
