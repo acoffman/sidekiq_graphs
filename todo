@@ -1,6 +1,7 @@
 # TODO
 
 - I feel like store is too coupled to "start the workflow" is that okay? Maybe not... how do we effectively decouple them
+- Nodes get queued up and run if they have an indegree of zero. Now need to add callbacks (middleware maybe?) to mark nodes as visited when they finish running. This will require the worker (or middleware) knowing the node_id
 
 
 # Ideas
