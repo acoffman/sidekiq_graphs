@@ -1,28 +1,21 @@
-require 'sidekiq'
+require '~/git/sidekiq_testing/test_operation'
+require '~/git/sidekiq_testing/redis_graph'
+require '~/git/sidekiq_testing/graph'
+require '~/git/sidekiq_testing/extensions/string'
 
-# If your client is single-threaded, we just need a single connection in our Redis connection pool
-Sidekiq.configure_client do |config|
-  config.redis = { :namespace => 'x', :size => 1, :url => 'redis://localhost:6379' }
-end
 
-# Sidekiq server is multi-threaded so our Redis connection pool size defaults to concurrency (-c)
-Sidekiq.configure_server do |config|
-  config.redis = { :namespace => 'x', :url => 'redis://localhost:6379' }
-end
+#[10, 50, 100, 500, 1000, 5000, 10_000, 20_000, 30_000, 40_00, 50_000, 100_000, 200_000, 300_000, 400_000, 500_000, 600_000, 800_000, 1_000_000].each do |num|
+[10].each do |num|
+  t = Time.now
+  g = Graph.new
 
-# Start up sidekiq via
-# ./bin/sidekiq -r ./examples/por.rb
-# and then you can open up an IRB session like so:
-# irb -r ./examples/por.rb
-# where you can then say
-# PlainOldRuby.perform_async "like a dog", 3
-#
-class SerialSleep
-  include Sidekiq::Worker
-
-  def perform(count)
-    sleep 1
-    puts "Job ##{count}"
-     SerialSleep.perform_async(count - 1) if count > 0
+  n1 = g.create_node( 'PrintNode', 0 )
+  (1..num).each do |node_num|
+    n2 = g.create_node( 'PrintNode', node_num )
+    g.link( n1, n2 )
+    n1 = n2
   end
+  RedisGraph.store(g)
+  puts "#{num}\t#{Time.now - t}"
 end
+
