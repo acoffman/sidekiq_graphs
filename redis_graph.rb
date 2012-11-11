@@ -1,4 +1,5 @@
 require 'redis'
+require './extensions/string'
 
 class RedisGraph
 

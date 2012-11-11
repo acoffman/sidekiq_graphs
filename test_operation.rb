@@ -19,6 +19,6 @@ class PrintNode
   include Sidekiq::Worker
 
   def perform( params = {} )
-    puts "I'm running: #{params[:msg]}"
+    puts "I'm running: #{params['msg']}"
   end
 end
