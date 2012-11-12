@@ -4,12 +4,12 @@ require '~/git/sidekiq_testing/graph'
 require '~/git/sidekiq_testing/extensions/string'
 
 
-t = Time.now
+puts Time.now.to_i
 g = Graph.new
 
 num = ARGV[0].to_i
 n0 = g.create_node( 'PrintNode', 'Begin' )
-nn = g.create_node( 'PrintNode', 'All done!' )
+nn = g.create_node( 'PrintNode', 'd' )
 (1..num).each do |node_num|
   n2 = g.create_node( 'PrintNode', node_num )
   g.link( n0, n2 )
@@ -17,5 +17,4 @@ nn = g.create_node( 'PrintNode', 'All done!' )
 end
 
 RedisGraph.store(g)
-puts "#{num}\t#{Time.now - t}"
 

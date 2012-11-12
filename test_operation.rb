@@ -19,6 +19,8 @@ class PrintNode
   include Sidekiq::Worker
 
   def perform( params = {} )
-    puts "I'm running: #{params['msg']}"
+    sleep 0.0001
+    #puts "I'm running: #{params['msg']}"
+    puts Time.now.to_i if params['msg'] == 'd'
   end
 end
