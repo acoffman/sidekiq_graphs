@@ -1,7 +1,7 @@
-require '~/git/sidekiq_testing/redis_graph'
-require '~/git/sidekiq_testing/graph'
-require '~/git/sidekiq_testing/extensions/string'
-require '~/git/sidekiq_testing/test_operation'
+require './redis_graph'
+require './graph'
+require './extensions/string'
+require './test_operation'
 
 g = Graph.new
 n1 = g.create_node( 'PrintNode', 'some_id' )
