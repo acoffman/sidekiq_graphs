@@ -1,0 +1,5 @@
+install redis (assume default settings in connection string or change in test_operation.rb)
+    bundle install
+    bundle exec sidekiq -c 100 -r ./test_operation.rb
+
+to start 
