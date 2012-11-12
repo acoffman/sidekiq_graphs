@@ -2,4 +2,6 @@ install redis (assume default settings in connection string or change in test_op
     bundle install
     bundle exec sidekiq -c 100 -r ./test_operation.rb
 
-to start 
+to start
+
+    bundle exec ruby parallel.rb 1000
